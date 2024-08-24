@@ -1,17 +1,22 @@
-import SideBar from "./Components/SideBar/sidebar.tsx";
-import { useState } from "react";
-import { project } from "@/types/Project.ts";
-import ProjectCard from "./Components/Project/ProjectCard.tsx";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "@/Layout";
+import Home from "@/pages/Home";
+import AddProject from "./pages/AddProject";
+import Project from "./pages/Project";
 
-function App() {
-  const [currentProject, setCurrentProject] = useState<project | null>(null);
- 
+
+const App = () => {
   return (
-    <div className="flex  h-screen ">
-      <SideBar setCurrentProject={setCurrentProject}/>
-      {currentProject && <ProjectCard Project={currentProject}/>}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="add" element={<AddProject />} />
+          <Route path="projects/:id" element={<Project />} />
+        </Route>
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

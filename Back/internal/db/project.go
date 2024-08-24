@@ -22,3 +22,16 @@ func (db *DB) FetchProjects() ([]models.Project, error) {
 	}
 	return projects, nil
 }
+
+func (db *DB) FetchProject(projectID int) (models.Project, error) {
+	row, err := db.QueryRow("SELECT id, name, deadline, pdf, image FROM projects WHERE id = $1", projectID)
+	if err != nil {
+		return models.Project{}, err
+	}
+	var project models.Project
+	err = row.Scan(&project.Id, &project.Name, &project.Deadline, &project.Pdf, &project.Image)
+	if err != nil {
+		return models.Project{}, err
+	}
+	return project, nil
+}

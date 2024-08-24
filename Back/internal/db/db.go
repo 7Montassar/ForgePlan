@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"github.com/7montassar/ForgePlan/config"
 	"log"
@@ -30,4 +31,10 @@ func (db *DB) Close() error {
 }
 func (db *DB) Query(query string, args ...interface{}) (*sql.Rows, error) {
 	return db.conn.Query(query, args...)
+}
+func (db *DB) QueryRow(query string, args ...interface{}) (*sql.Row, error) {
+	if query == "" {
+		return db.conn.QueryRow(""), errors.New("query cannot be empty")
+	}
+	return db.conn.QueryRow(query, args...), nil
 }

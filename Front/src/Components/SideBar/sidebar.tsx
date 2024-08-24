@@ -2,10 +2,9 @@ import SearchBar from "@/Components/SideBar/searchBar";
 import Button from "@/Components/SideBar/button.tsx";
 import { GoProjectRoadmap } from "react-icons/go";
 import ProjectsModal from "@/Components/SideBar/projectsModal.tsx";
-import { project } from "@/types/Project";
 
 
-const SideBar = ({setCurrentProject}: {setCurrentProject: React.Dispatch<React.SetStateAction<project | null>>}) => {
+const SideBar = () => {
     return (
         <div className="bg-zinc-900 w-[35%] 2xl:w-[25%]  h-screen">
             <div className="flex flex-col h-full gap-4 p-4">
@@ -20,7 +19,7 @@ const SideBar = ({setCurrentProject}: {setCurrentProject: React.Dispatch<React.S
             <SearchBar/>
              </div>
              <div className="overflow-hidden hover:overflow-y-scroll scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-400">
-             <ProjectsModal setCurrentProject={setCurrentProject}/>
+             <ProjectsModal />
              </div>
             </div>
         </div>

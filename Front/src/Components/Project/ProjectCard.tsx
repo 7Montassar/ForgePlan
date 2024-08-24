@@ -24,7 +24,7 @@ const ProjectCard = ({ Project }: { Project: project }) => {
        className="m-auto"
         width="80%"
         height="100%"
-        data="https://jmp.sh/s/loHYkHdM8hXXQmLuyjZX"
+        data="https://online.flippingbook.com/view/774438281/"
         type="application/pdf"
       />
       )}
