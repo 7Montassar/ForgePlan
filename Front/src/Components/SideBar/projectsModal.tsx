@@ -1,4 +1,4 @@
-import { project } from "@/types/project";
+import { project } from "@/types/Project";
 import { useQuery } from "@tanstack/react-query";
 import Project from "@/Components/SideBar/project.tsx";
 
@@ -23,7 +23,7 @@ const ProjectsModal = ({setCurrentProject}: {setCurrentProject: React.Dispatch<R
             {projects && projects.map((project: project) => (
                 <div key={project.Id} 
                 onClick={() => setCurrentProject(project)} 
-                className="flex flex-col gap-2 p-4 rounded-lg hover:bg-zinc-800">
+                className="group flex flex-col gap-2 p-2 rounded-lg hover:bg-zinc-800 cursor-pointer">
                     <Project project={project}/>
                 </div>
             ))}
