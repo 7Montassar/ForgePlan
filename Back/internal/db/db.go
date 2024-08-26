@@ -38,3 +38,10 @@ func (db *DB) QueryRow(query string, args ...interface{}) (*sql.Row, error) {
 	}
 	return db.conn.QueryRow(query, args...), nil
 }
+func (db *DB) Exec(query string, args ...interface{}) (sql.Result, error) {
+	var res sql.Result
+	if query == "" {
+		return res, errors.New("query cannot be empty")
+	}
+	return db.conn.Exec(query, args...)
+}

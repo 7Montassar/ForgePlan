@@ -56,3 +56,22 @@ func CreateProject(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+
+func UpdateProjectImage(w http.ResponseWriter, r *http.Request) {
+	var project models.Project
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&project)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	err = services.UpdateProjectImage(project.Id, project.Image)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("content-type", "application/json")
+	if err := json.NewEncoder(w).Encode(project); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+}

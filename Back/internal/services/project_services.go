@@ -41,3 +41,15 @@ func CreateProject(project *models.Project) error {
 	}
 	return nil
 }
+func UpdateProjectImage(projectID int, image string) error {
+	db, err := db.NewDB()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	err = db.UpdateProjectImage(projectID, image)
+	if err != nil {
+		return err
+	}
+	return nil
+}

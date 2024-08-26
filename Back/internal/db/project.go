@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"fmt"
 	"github.com/7montassar/ForgePlan/config"
 	"github.com/7montassar/ForgePlan/internal/models"
@@ -58,6 +59,22 @@ func (db *DB) CreateProject(project *models.Project) error {
 	err = row.Scan(&project.Id, &project.Image)
 	if err != nil {
 		return err
+	}
+	return nil
+
+}
+
+func (db *DB) UpdateProjectImage(projectID int, image string) error {
+	res, err := db.Exec("UPDATE projects SET image = $1 WHERE id = $2", image, projectID)
+	if err != nil {
+		return err
+	}
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rowsAffected == 0 {
+		return errors.New("no rows affected")
 	}
 	return nil
 }
