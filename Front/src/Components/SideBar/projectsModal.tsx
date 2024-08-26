@@ -4,7 +4,9 @@ import Project from "@/Components/SideBar/project.tsx";
 import { Link } from "react-router-dom";
 
 const fetchProjects = async ():Promise<project[]> => {
-    const res = await fetch('http://localhost:8080/projects');
+    const res = await fetch('http://localhost:8080/projects',{
+        method: 'GET',
+    });
     if (!res.ok) {
         throw new Error('Network response was not ok');
     }

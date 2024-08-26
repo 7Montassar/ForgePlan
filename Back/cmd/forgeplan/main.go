@@ -9,24 +9,6 @@ import (
 	"net/http"
 )
 
-func main() {
-
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatal(err)
-	}
-	mux := http.NewServeMux()
-	mux.HandleFunc("/projects", corsMiddleware(handlers.GetProjects))
-	mux.HandleFunc("/projects/{id}", corsMiddleware(handlers.GetProject))
-
-	serverAdd := fmt.Sprintf(":%s", cfg.Port)
-	fmt.Println("Server started on port", cfg.Port)
-	err = http.ListenAndServe(serverAdd, mux)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-}
 func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -41,4 +23,22 @@ func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 		next.ServeHTTP(w, r)
 	}
+}
+func main() {
+	cfg, err := config.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("GET /projects", corsMiddleware(handlers.GetProjects))
+	mux.HandleFunc("GET /projects/{id}", corsMiddleware(handlers.GetProject))
+	mux.HandleFunc("POST /projects", corsMiddleware(handlers.CreateProject))
+	serverAdd := fmt.Sprintf(":%s", cfg.Port)
+	fmt.Println("Server started on port", cfg.Port)
+	err = http.ListenAndServe(serverAdd, mux)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }

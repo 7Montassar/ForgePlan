@@ -29,3 +29,15 @@ func GetProject(projectID int) (models.Project, error) {
 	}
 	return project, nil
 }
+func CreateProject(project *models.Project) error {
+	db, err := db.NewDB()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	err = db.CreateProject(project)
+	if err != nil {
+		return err
+	}
+	return nil
+}

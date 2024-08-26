@@ -14,7 +14,6 @@ const fetchProject = async (id: string): Promise<project> => {
 const Project = () => {
   const { id } = useParams();
 
-  // Early return if id is undefined
   if (!id) {
     return <div>Error: Project ID is missing</div>;
   }

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"github.com/7montassar/ForgePlan/internal/models"
 	"github.com/7montassar/ForgePlan/internal/services"
 	"net/http"
 	"strconv"
@@ -27,6 +28,25 @@ func GetProject(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	project, err := services.GetProject(projectID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("content-type", "application/json")
+	if err := json.NewEncoder(w).Encode(project); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func CreateProject(w http.ResponseWriter, r *http.Request) {
+	var project models.Project
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&project)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	err = services.CreateProject(&project)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

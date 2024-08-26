@@ -13,7 +13,8 @@ const Project = ({ project }: { project: project }) => {
   return (
     <div className="flex gap-2 items-center ">
       <div className="w-16 h-16 rounded-md group-hover:bg-zinc-900 bg-zinc-800 flex justify-center items-center">
-        <img src={project.Image} alt={project.Name} className="w-14 h-14" />
+
+      <img src={project.Image} alt={project.Name} className="w-14 h-14" /> 
       </div>
       <div className="flex flex-col ">
         <h1 className="text-lg font-bold text-white">{project.Name}</h1>
