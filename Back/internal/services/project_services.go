@@ -53,3 +53,15 @@ func UpdateProjectImage(projectID int, image string) error {
 	}
 	return nil
 }
+func GetCollaborators(projectID int) ([]models.Collaborator, error) {
+	db, err := db.NewDB()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	collaborators, err := db.FetchCollaborators(projectID)
+	if err != nil {
+		return nil, err
+	}
+	return collaborators, nil
+}

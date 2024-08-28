@@ -1,10 +1,9 @@
 import { Tab } from "@/types/Project";
 const links: Tab[] = [Tab.PDF, Tab.NOTES, Tab.TASKS, Tab.GPT];
 
-type Tabs = keyof typeof Tab;
 const NavMenu = ({setCurrentTab}: {setCurrentTab: React.Dispatch<React.SetStateAction<Tab>>}) => {
   return (
-   <div className="flex  justify-between xl:px-24 px-4 py-8">
+   <div className="flex  justify-between">
     {links.map((link: Tab) => (
       <div key={link}
        onClick={() => setCurrentTab(link)}

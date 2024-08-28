@@ -7,3 +7,13 @@ input:-webkit-autofill {
   -webkit-text-fill-color: white; /* Keeps the text color as black */
   transition: background-color 5000s ease-in-out 0s;
 }
+
+/* For WebKit browsers (Chrome, Safari) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* For Mozilla Firefox */
+input[type="date"] {
+  color: white;
+}

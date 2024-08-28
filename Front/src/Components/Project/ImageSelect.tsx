@@ -10,8 +10,17 @@ const ImageSelect = ({
   project: project;
 }) => {
   const [newImage, setNewImage] = useState<string>(project.Image);
+  const [imageError, setImageError] = useState<boolean>(false);
   const Navigate = useNavigate();
   const handleSubmit = async () => {
+    let err = false;
+    if (newImage === "") {
+      setImageError(true);
+      err = true;
+    }
+    if (err) {
+      return;
+    }
     if (newImage !== project.Image) {
     try{
       const res = await fetch("http://localhost:8080/updateProjectImage", {
@@ -52,7 +61,7 @@ window.location.reload();
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setNewImage(e.target.value)
         }
-        hasError={false}
+        hasError={imageError}
       />
       <div className="flex">
       

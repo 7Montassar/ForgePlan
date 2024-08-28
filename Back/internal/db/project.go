@@ -8,8 +8,12 @@ import (
 	"github.com/7montassar/ForgePlan/pkg"
 )
 
+var (
+	ignore interface{}
+)
+
 func (db *DB) FetchProjects() ([]models.Project, error) {
-	rows, err := db.Query("SELECT id, name, deadline, pdf, image FROM projects")
+	rows, err := db.Query("SELECT id, name, deadline, image FROM projects")
 	if err != nil {
 		return nil, err
 	}
@@ -17,7 +21,7 @@ func (db *DB) FetchProjects() ([]models.Project, error) {
 	var projects []models.Project
 	for rows.Next() {
 		var project models.Project
-		err := rows.Scan(&project.Id, &project.Name, &project.Deadline, &project.Pdf, &project.Image)
+		err := rows.Scan(&project.Id, &project.Name, &project.Deadline, &project.Image)
 		if err != nil {
 			return nil, err
 		}
@@ -43,6 +47,8 @@ func (db *DB) FetchProject(projectID int) (models.Project, error) {
 }
 
 func (db *DB) CreateProject(project *models.Project) error {
+	var collaborator models.Collaborator
+	collabId := 1
 	cfg, err := config.Load()
 	if err != nil {
 		return err
@@ -60,8 +66,20 @@ func (db *DB) CreateProject(project *models.Project) error {
 	if err != nil {
 		return err
 	}
+	row, err = db.QueryRow("SELECT * FROM collaborators WHERE id = $1", collabId)
+	if err != nil {
+		return err
+	}
+	err = row.Scan(&collaborator.Id, &collaborator.Name, &collaborator.Email)
+	if err != nil {
+		return err
+	}
+	project.AddCollaborator(collaborator)
+	_, err = db.Exec("INSERT INTO projects_collaborators (project_id, collaborator_id) VALUES ($1, $2)", project.Id, project.Collaborators[0].Id)
+	if err != nil {
+		return err
+	}
 	return nil
-
 }
 
 func (db *DB) UpdateProjectImage(projectID int, image string) error {
@@ -77,4 +95,38 @@ func (db *DB) UpdateProjectImage(projectID int, image string) error {
 		return errors.New("no rows affected")
 	}
 	return nil
+}
+
+func (db *DB) FetchCollaborators(projectID int) ([]models.Collaborator, error) {
+	rows, err := db.Query("SELECT * FROM collaborators c WHERE c.id IN (SELECT collaborator_id FROM projects_collaborators WHERE project_id = $1)", projectID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var collaborators []models.Collaborator
+	for rows.Next() {
+		collaborator := models.NewCollaborator()
+		err := rows.Scan(&collaborator.Id, &collaborator.Name, &collaborator.Email)
+		if err != nil {
+			return nil, err
+		}
+		rows2, err := db.Query("SELECT * FROM tasks WHERE collaborator_id = $1 AND project_id = $2", collaborator.Id, projectID)
+		if err != nil {
+			return nil, err
+		}
+		defer rows2.Close()
+		for rows2.Next() {
+			task := models.Task{}
+			err := rows2.Scan(&task.Id, &task.ProjectId, &ignore, &task.Title, &task.Description, &task.Completed)
+			if err != nil {
+				return nil, err
+			}
+			collaborator.AddTask(task)
+		}
+		collaborators = append(collaborators, *collaborator)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return collaborators, nil
 }

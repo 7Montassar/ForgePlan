@@ -7,13 +7,36 @@ const ProjectForm = ({setProject, setPhase}: {setProject: React.Dispatch<React.S
   const [name, setName] = useState<string>("");
   const [deadline, setDeadline] = useState<string>("");
   const [pdf, setPdf] = useState<string>("");
+  const [nameError, setNameError] = useState<boolean>(false);
+  const [deadlineError, setDeadlineError] = useState<boolean>(false);
+  const [pdfError, setPdfError] = useState<boolean>(false);
   const handleSubmit = async () => {
+    let err = false;
+    if (name === "") {
+      setNameError(true);
+      err = true;
+    }
+    if (deadline === "") {
+      setDeadlineError(true);
+      err = true;
+    }
+    if (new Date(deadline) < new Date()) {
+      setDeadlineError(true);
+      err = true;
+    }
+    if (pdf === "") {
+      setPdfError(true);
+      err = true;
+    }
+    if (err) {
+      return;
+    }
     try {
       const res = await fetch("http://localhost:8080/createProject", {
         method: "POST",
         body: JSON.stringify({
           name,
-          deadline,
+          deadline: new Date(deadline).toISOString(),
           pdf,
         }),
       });
@@ -28,8 +51,8 @@ const ProjectForm = ({setProject, setPhase}: {setProject: React.Dispatch<React.S
     }
   };
   return (
-    <div className="flex flex-col gap-8">
-          <form className="flex flex-col gap-10 ">
+    <div className="flex flex-col gap-12 pt-8">
+          <form className="flex flex-col gap-10 w-full lg:w-[80%] xl:w-[70%] m-auto">
             <FloatingLabelInput
               labelText="Project Name"
               type="text"
@@ -38,17 +61,17 @@ const ProjectForm = ({setProject, setPhase}: {setProject: React.Dispatch<React.S
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setName(e.target.value)
               }
-              hasError={false}
+              hasError={nameError}
             />
             <FloatingLabelInput
               labelText="Deadline"
-              type="text"
+              type="date"
               id="deadline"
               value={deadline}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setDeadline(e.target.value)
               }
-              hasError={false}
+              hasError={deadlineError}
             />
             <FloatingLabelInput
               labelText="Pdf Link"
@@ -58,7 +81,7 @@ const ProjectForm = ({setProject, setPhase}: {setProject: React.Dispatch<React.S
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setPdf(e.target.value)
               }
-              hasError={false}
+              hasError={pdfError}
             />
           </form>
           <div

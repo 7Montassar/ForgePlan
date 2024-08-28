@@ -5,6 +5,7 @@ import ProjectsModal from "@/Components/SideBar/projectsModal.tsx";
 import Modal from "../Modal/Modal";
 import AddProject from "@/pages/AddProject";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 
 const SideBar = () => {
@@ -17,14 +18,14 @@ const SideBar = () => {
     };
     return (
         <>
-        <div className="bg-zinc-900 w-[35%] 2xl:w-[25%]  h-screen">
+        <div className="bg-zinc-900 w-[35%] md:w-[30%] xl:w-[25%]   h-screen">
             <div className="flex flex-col h-full gap-4 p-4">
              <div className="flex flex-col gap-2">
              <div className="flex  justify-between ">
-               <div className="flex items-center gap-1">
+               <Link className="flex items-center gap-1" to="/">
                   <GoProjectRoadmap className="text-3xl text-white"/>
                    <h1 className="text-2xl text-white font-bold">ForgePlan</h1>
-               </div>
+               </Link>
             <Button onClick={openModal}/>
             </div>
             <SearchBar/>

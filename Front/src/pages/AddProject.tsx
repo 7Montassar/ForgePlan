@@ -9,7 +9,7 @@ const AddProject = () => {
 
 
     return (
-    <div className="flex flex-col gap-10 p-14  h-full justify-center">
+    <div className="flex flex-col gap-10 px-14 py-10">
       <h1 className="text-3xl text-white text-center">Add Project</h1>
       <div className="flex h-2 px-16 justify-between">
         <div

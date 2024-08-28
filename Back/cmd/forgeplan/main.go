@@ -35,6 +35,7 @@ func main() {
 	mux.HandleFunc("GET /projects/{id}", corsMiddleware(handlers.GetProject))
 	mux.HandleFunc("POST /createProject", corsMiddleware(handlers.CreateProject))
 	mux.HandleFunc("POST /updateProjectImage", corsMiddleware(handlers.UpdateProjectImage))
+	mux.HandleFunc("GET /projects/{id}/tasks", corsMiddleware(handlers.GetTasks))
 	serverAdd := fmt.Sprintf(":%s", cfg.Port)
 	fmt.Println("Server started on port", cfg.Port)
 	err = http.ListenAndServe(serverAdd, mux)

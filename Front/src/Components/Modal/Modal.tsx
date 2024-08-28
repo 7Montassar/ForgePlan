@@ -6,8 +6,8 @@ const Modal = ({children, close}: {children: React.ReactNode, close: () => void}
 
   const handleClickOutside = (e: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+      window.location.reload();
       close();
-    window.location.reload();
       }
   };
 
@@ -22,7 +22,7 @@ const Modal = ({children, close}: {children: React.ReactNode, close: () => void}
     <>
       <div className="bg-opacity-40 bg-black w-screen h-screen fixed top-0 left-0" />
       <div 
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-[70%]"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-[90%]"
         ref={modalRef}
       > 
         <div className="bg-zinc-900 w-full h-full rounded-lg">

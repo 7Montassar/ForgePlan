@@ -9,7 +9,6 @@ const FloatingLabelInput = ({ labelText, type, id, value, onChange, hasError }:{
   hasError: boolean,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
-
   return (
     <div className="relative text-left w-full">
       <input
@@ -27,7 +26,7 @@ const FloatingLabelInput = ({ labelText, type, id, value, onChange, hasError }:{
       <label
         htmlFor={id}
         className={`absolute  left-4  transition-all duration-300 ease ${
-          isFocused || value
+          isFocused || value || type !== "text"
             ? "px-2 -top-5 bg-zinc-900 text-zinc-200"
             : "top-2  text-zinc-300"
         }`}
