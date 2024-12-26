@@ -22,14 +22,14 @@ func Load() (*Configuration, error) {
 		return nil, err
 	}
 	return &Configuration{
-		DBHost:         getEnv("DB_HOST", "localhost"),
-		DBPort:         getEnv("DB_PORT", "5432"),
-		DBUser:         getEnv("DB_USER", "postgres"),
-		DBPassword:     getEnv("DB_PASSWORD", ""),
-		DBName:         getEnv("DB_NAME", "postgres"),
-		Port:           getEnv("PORT", "8080"),
-		GoogleApiKey:   getEnv("GOOGLE_API_KEY", "AIzaSyBF_3ojJTScBfq7jdS3crubCJnyEZu95Og"),
-		SearchEngineId: getEnv("SEARCH_ENGINE_ID", "c26d7077fb1c5480d"),
+		DBHost:         getEnv("DB_HOST"),
+		DBPort:         getEnv("DB_PORT"),
+		DBUser:         getEnv("DB_USER"),
+		DBPassword:     getEnv("DB_PASSWORD"),
+		DBName:         getEnv("DB_NAME"),
+		Port:           getEnv("PORT"),
+		GoogleApiKey:   getEnv("GOOGLE_API_KEY"),
+		SearchEngineId: getEnv("SEARCH_ENGINE_ID"),
 	}, nil
 }
 
